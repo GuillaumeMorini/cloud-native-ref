@@ -24,7 +24,11 @@ spec:
       serviceAccountName: default
       containers:
         - name: dagger-engine
+<<<<<<< HEAD
           image: registry.dagger.io/engine:v0.18.8
+=======
+          image: registry.dagger.io/engine:v0.18.5
+>>>>>>> a2a68e9 (chore(deps): update registry.dagger.io/engine docker tag to v0.18.5)
           imagePullPolicy: IfNotPresent
           args:
             - --addr

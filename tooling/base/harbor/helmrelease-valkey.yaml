@@ -13,7 +13,11 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
+<<<<<<< HEAD
       version: "3.0.8"
+=======
+      version: "3.0.3"
+>>>>>>> d87dc6b (chore(deps): update valkey docker tag to v3.0.3)
   interval: 10m0s
   install:
     remediation:

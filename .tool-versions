@@ -2,7 +2,11 @@ terramate 0.13.1
 pre-commit 4.2.0
 opentofu 1.9.1
 <<<<<<< HEAD
+<<<<<<< HEAD
 trivy 0.62.1
 =======
 trivy 0.61.1
 >>>>>>> 68a5536 (chore(deps): update dependency opentofu to v1.9.1)
+=======
+trivy 0.62.0
+>>>>>>> 942e7f7 (chore(deps): update dependency trivy to v0.62.0)

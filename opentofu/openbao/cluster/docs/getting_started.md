@@ -69,22 +69,6 @@ Additionally, the `recovery key` requires careful handling. It should be securel
 bao login
 ```
 
-In `ha` mode you can also list all the cluster peers (members of the OpenBao cluster)
-
-```console
-bao operator raft list-peers
-```
-
-you should get an output that looks like that
-```console
-Node                   Address             State       Voter
-----                   -------             -----       -----
-i-0ef3177199c5252c6    10.0.0.213:8201     leader      true
-i-0ad5039408a66cb2c    10.0.10.226:8201    follower    true
-i-0b26df9b89772e4c5    10.0.29.250:8201    follower    true
-i-0c7e7cc9590ec721d    10.0.42.25:8201     follower    true
-i-0118db2721ee07b6c    10.0.24.141:8201    follower    true
-```
 
 You can also check the cluster's status. The important information below is that OpenBao is "Initialized" and not "Sealed".
 ```console

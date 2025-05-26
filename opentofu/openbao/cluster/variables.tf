@@ -1,3 +1,34 @@
+variable "gcp_project_id" {
+  type = string
+}
+
+variable "gcp_region" {
+  type = string
+}
+
+variable "gcp_zone" {
+  type = string
+}
+
+variable "network_name" {
+  description = "The name of the Cloud Workstation cluster network"
+  type        = string
+  default     = "cn-network"
+}
+
+variable "subnet_name" {
+  description = "The name of the Cloud Workstation cluster subnet"
+  type        = string
+  default     = "cn-subnet"
+}
+
+variable "subnet_iprange" {
+  description = "The IP range of the Cloud Workstation cluster subnet"
+  type        = string
+  default     = "10.0.0.0/16"
+}
+
+
 variable "env" {
   description = "The environment of the OpenBao cluster"
   type        = string
@@ -31,12 +62,6 @@ variable "openbao_data_path" {
   default     = "/opt/openbao/data"
 }
 
-variable "region" {
-  description = "AWS Region"
-  default     = "eu-west-3"
-  type        = string
-}
-
 variable "name" {
   description = "Name of the resources created for this OpenBao cluster"
   default     = "openbao"
@@ -48,24 +73,8 @@ variable "leader_tls_servername" {
   description = "One of the shared DNS SAN used to create the certs use for mTLS"
 }
 
-variable "ami_filter" {
-  description = "List of maps used to create the AMI filter for the action runner AMI."
-  type        = map(list(string))
-
-  default = {
-    name = ["ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"]
-  }
-}
-
-variable "ami_owner" {
-  description = "Owner ID of the AMI"
-  type        = string
-
-  default = "099720109477" # AWS account ID of Canonical
-}
-
 variable "openbao_certificates_secret_name" {
-  description = "The name of the AWS Secrets Manager secret containing the OpenBao certificates"
+  description = "The name of the GCP Secret Manager secret containing the OpenBao certificates"
   type        = string
 }
 
@@ -81,8 +90,3 @@ variable "prometheus_node_exporter_enabled" {
   default     = false
 }
 
-variable "tags" {
-  description = "A map of tags to add to all resources"
-  type        = map(string)
-  default     = {}
-}

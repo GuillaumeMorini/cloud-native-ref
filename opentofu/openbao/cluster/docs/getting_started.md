@@ -4,16 +4,18 @@
 1. First of all we need to create the **supporting resources** such as the VPC and subnets using [this directory](../../../network/).
 
 2. It is required to provide OpenBao's certificates (`.tls/openbao.pem`, `.tls/openbao-key.pem` and `ca-chain.pem`). You can create the certificates using [this procedure](pki_requirements.md)
-   Store them in AWS SecretsManager using these steps:
+   Store them in Google Cloud Secret Manager using these steps:
 
    ```bash
-    SECRET_NAME="certificates/priv.cloud.ogenki.io/openbao"
+    SECRET_NAME="openbao"
 
     SECRETS_JSONFILE=$(mktemp)
     jq -nr --arg key "$(cat .tls/openbao-key.pem)" --arg cert "$(cat .tls/openbao.pem)" --arg ca "$(cat .tls/ca-chain.pem)" '{"cert":$cert,"key":$key,"ca":$ca}' > $SECRETS_JSONFILE
 
-    # Create secrets in AWS Secrets Manager
-    aws secretsmanager create-secret --name $SECRET_NAME --secret-string file:///$SECRETS_JSONFILE --region eu-west-3
+    # Create secrets in GCP Secret Manager
+    gcloud secrets create $SECRET_NAME \
+    --replication-policy="automatic"
+    gcloud secrets versions add $SECRET_NAME --data-file=$SECRETS_JSONFILE
 
     # Clean up
     rm $SECRETS_JSONFILE
@@ -22,31 +24,19 @@
 3. Prepare your `variables.tfvars` file:
 
 ```hcl
-name                             = "ogenki-openbao"                              # Name of your Vault instance
-leader_tls_servername            = "bao.priv.cloud.ogenki.io"                    # Vault domain name that will be exposed to users
-domain_name                      = "priv.cloud.ogenki.io"                        # Route53 private zone where to provision the DNS records
-env                              = "dev"                                         # Environment used to tags resources
-mode                             = "dev"                                         # Important: More about this setting in this documentation.
-region                           = "eu-west-3"                                   # Where all the resources will be created
-enable_ssm                       = true                                          # Allow to access to the EC2 instances. Enabled for provisionning, but then it should be disabled.
-openbao_certificates_secret_name = "certificates/priv.cloud.ogenki.io/openbao"   # The name of the AWS Secrets Manager secret containing the OpenBao certificates
-
-# Prefer using hardened AMI
-# ami_owner = "3xxxxxxxxx"                              # Account ID where the hardened AMI is
-# ami_filter = {
-#   "name" = ["*hardened-ubuntu-*"]
-# }
-
-
-tags = {                                              # In my case, these tags are also used to identify the supporting resources (VPC, subnets...)
-  project = "cloud-native-ref"
-  owner   = "Smana"
-}
+name                             = "openbao"                  # Name of your OpenBao instance
+leader_tls_servername            = "bao.gmo-inc.com"          # OpenBao domain name that will be exposed to users
+domain_name                      = "gmo-inc.com"              # DNS zone where to provision the DNS records
+env                              = "dev"                      # Environment used to tags resources
+mode                             = "dev"                      # Important: More about this setting in this documentation.
+region                           = "eu-west-3"                # Where all the resources will be created
+enable_ssm                       = true                       # Allow to access to the instances. Enabled for provisionning, but then it should be disabled.
+openbao_certificates_secret_name = "openbao"                  # The name of the GCP Secret Manager secret containing the OpenBao certificates
 ```
 
 4. Run the command `tofu apply --var-file variables.tfvars`
 
-5. Connect to one of the EC2 instances using SSM and init the OpenBao instance:
+5. Connect to one of the instances using SSH and init the OpenBao instance:
 
 Switch to the `root` user
 ```console

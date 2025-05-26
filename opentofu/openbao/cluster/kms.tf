@@ -1,9 +1,15 @@
-#trivy:ignore:AVD-AWS-0104 trivy:ignore:AVD-AWS-0065
-resource "aws_kms_key" "openbao" {
-  description             = "OpenBao unseal key"
-  deletion_window_in_days = 10
+resource "google_kms_key_ring" "openbao" {
+  name     = "openbao-kms"
+  location = "global"
+  project  = var.gcp_project_id
+}
 
-  tags = {
-    Name = "openbao-kms-unseal-${local.name}"
+resource "google_kms_crypto_key" "openbao-key" {
+  name            = "openbao-key"
+  key_ring        = google_kms_key_ring.openbao.id
+  rotation_period = "7776000s"
+
+  lifecycle {
+    prevent_destroy = true
   }
 }

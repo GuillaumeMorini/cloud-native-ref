@@ -11,11 +11,3 @@ write_files:
     encoding: b64
     path: /opt/openbao/tls/ca.pem
     permissions: "0644"
-
-package_upgrade: true
-
-packages:
-  - jq
-  - gpg
-  - snapd
-  - wget

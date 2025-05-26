@@ -39,3 +39,6 @@ terraform.rc
 # Secrets directory
 **/.tls/*
 .secrets
+
+# my notes files
+notes.txt

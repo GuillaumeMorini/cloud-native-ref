@@ -4,7 +4,7 @@ globals {
   provisioner                      = "tofu"
   region                           = "eu-west-3"
   profile                          = ""
-  eks_cluster_name                 = "mycluster-0"
+  gke_cluster_name                 = "mycluster-0"
   openbao_url                      = "https://bao.priv.cloud.ogenki.io:8200"
   root_token_secret_name           = "openbao/cloud-native-ref/tokens/root"
   root_ca_secret_name              = "certificates/priv.cloud.ogenki.io/root-ca"
